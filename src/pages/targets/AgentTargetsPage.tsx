@@ -24,11 +24,18 @@ export default function AgentTargetsPage() {
   const [teamYear, setTeamYear] = useState<number | "">("");
   const [teamTargetAmount, setTeamTargetAmount] = useState<number | "">("");
   const [teamTargetLoanCount, setTeamTargetLoanCount] = useState<number | "">("");
-
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  const currentYear = now.getFullYear();
+  
   /* FETCH DATA */
   useEffect(() => {
-    dispatch(fetchAgentTargets({}));
-    dispatch(getTeamTargets({}));
+    const now = new Date();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+
+    dispatch(fetchAgentTargets({ month, year }));
+    dispatch(getTeamTargets({ month, year }));
   }, [dispatch]);
 
   /* AGENT HANDLERS */
@@ -55,7 +62,10 @@ export default function AgentTargetsPage() {
       await dispatch(createAgentTarget(data));
     }
 
-    dispatch(fetchAgentTargets({}));
+    dispatch(fetchAgentTargets({
+        month: currentMonth,
+        year: currentYear,
+    }));
 
     setTeamMemberId("");
     setMonth("");
@@ -101,7 +111,10 @@ export default function AgentTargetsPage() {
       await createTeamTarget(data);
     }
 
-    dispatch(getTeamTargets({}));
+    dispatch(getTeamTargets({
+        month: currentMonth,
+        year: currentYear,
+    }));
 
     setTeamMonth("");
     setTeamYear("");

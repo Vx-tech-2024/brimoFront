@@ -11,7 +11,7 @@ export default function AgentPerformancePage() {
 
   useEffect(() => {
     dispatch(getAgentPerformance({}));
-    dispatch(getTeamSummaryData({})); // ✅ correct
+    dispatch(getTeamSummaryData({}));
   }, [dispatch]);
 
   return (
