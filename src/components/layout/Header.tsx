@@ -26,6 +26,8 @@ export default function Header() {
         return "Performance Tracker";
       case "/reports":
         return "Reports";
+      case "/daily-activity":
+        return "Daily Activity";
       default:
         return "Dashboard";
     }
