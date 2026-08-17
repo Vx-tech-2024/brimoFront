@@ -6,6 +6,7 @@ import targetReducer from "../features/targets/targetSlice";
 import performanceReducer from "../features/performance/performaceSlice";
 import reportsReducer from "../features/reports/reportSlice";
 import dashboardReducer from "../features/dashboard/dashboardSlice";
+import dailyActivityReducer from "../features/dailyActivity/dailyActivitySlice";
 
 export const store = configureStore({
     reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
         performance: performanceReducer,
         reports: reportsReducer,
         dashboard: dashboardReducer,
+        dailyActivity: dailyActivityReducer,
     },
 });
 

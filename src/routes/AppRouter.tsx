@@ -7,6 +7,7 @@ import LoanPage from "../pages/loans/LoanPage";
 import AgentTargetsPage from "../pages/targets/AgentTargetsPage";
 import AgentPerformancePage from "../pages/performance/AgentPerformancePage";
 import ReportsPage from "../pages/reports/ReportsPage";
+import DailyActivityPage from "../pages/dailyActivity/DailyActivityPage";
 
 export default function AppRouter() {
   return (
@@ -65,6 +66,15 @@ export default function AppRouter() {
             </ProtectedRoute>
            }
           />
+
+        <Route
+          path="/daily-activity"
+          element={
+            <ProtectedRoute>
+              <DailyActivityPage />
+            </ProtectedRoute>
+          }
+        />  
 
       </Routes>
     </BrowserRouter>
