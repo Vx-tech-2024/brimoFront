@@ -8,6 +8,7 @@ export default function Sidebar() {
     { name: "Agent Targets", path: "/target" },
     { name: "Performance", path: "/performance" },
     { name: "Reports", path: "/reports" },
+    { name: "Daily Activity", path: "/daily-activity" },
   ];
 
   return (
