@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import AppLayout from "../../components/layout/AppLayout";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {  createDailyActivity,  deleteDailyActivity,  getDailyActivities,} from "../../features/dailyActivity/dailyActivitySlice";
+import {  createDailyActivity,  deleteDailyActivity,  getDailyActivities, updateDailyActivity} from "../../features/dailyActivity/dailyActivitySlice";
 import { fetchTeamMembersRequest } from "../../features/teamMembers/teamMembersApi";
 import type { TeamMember } from "../../features/teamMembers/teamMembersTypes";
 
@@ -43,6 +43,7 @@ export default function DailyActivityPage() {
   const [date, setDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [editingId, setEditingId] = useState<string | null>(null);
 
     const variance = useMemo(() => {
     const given = Number(prospectsGiven) || 0;
@@ -71,6 +72,23 @@ export default function DailyActivityPage() {
     dispatch(getDailyActivities());
   }, [dispatch]);
 
+  const handleEdit = (activity: any) => {
+    setEditingId(activity.id);
+    setTeamMemberId(activity.teamMember.id);  
+    setActivityType(activity.activityType);
+    setProspectsGiven(activity.prospectsGiven);
+    setActualProspectsCalled(activity.actualProspectsCalled);
+    setLoanCreated(activity.loanCreated);
+    setLoanId(activity.loanId ?? "");
+    setSupervisorComment(activity.supervisorComment ?? "");
+    setDate(activity.date.split("T")[0]);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  };
+
     const handleSubmit = async (
     e: React.FormEvent
   ) => {
@@ -98,7 +116,24 @@ export default function DailyActivityPage() {
       );
       return;
     }
-
+    
+    if (editingId) {
+      await dispatch(
+        updateDailyActivity({
+          id: editingId,
+          data: {
+            teamMemberId,
+            activityType,
+            prospectsGiven: Number(prospectsGiven),
+            actualProspectsCalled: Number(actualProspectsCalled),
+            loanCreated,
+            loanId: loanCreated ? loanId : undefined,
+            supervisorComment: supervisorComment || undefined,
+            date,
+          },
+        })
+      ).unwrap();
+    }else {
     await dispatch(
       createDailyActivity({
         teamMemberId,
@@ -122,8 +157,10 @@ export default function DailyActivityPage() {
         date,
       })
     ).unwrap();
+  }
 
     // Reset form
+    setEditingId(null);
     setTeamMemberId("");
     setActivityType("DATA_FOLLOW_UP");
     setProspectsGiven("");
@@ -143,6 +180,7 @@ export default function DailyActivityPage() {
   INSTITUTIONAL_VISIT: "Institutional Visit",
   OTHERS: "Others",
 };
+
 
 
 return (
@@ -374,6 +412,8 @@ return (
           >
             {loading
               ? "Saving..."
+              : editingId
+              ? "Update Activity"
               : "Create Activity"}
           </button>
         </div>
@@ -492,7 +532,10 @@ return (
                   </td>
 
                   <td className="p-3">
-
+                  <div className="flex flex-col gap-2">
+                    <button type="button" onClick={() => handleEdit(activity)} className="px-3 py-1 rounded">
+                      Edit
+                    </button>
                     <button
                       type="button"
                       onClick={() => {
@@ -512,7 +555,7 @@ return (
                     >
                       Delete
                     </button>
-
+                  </div>
                   </td>
 
                 </tr>
