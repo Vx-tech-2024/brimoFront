@@ -533,7 +533,7 @@ return (
 
                   <td className="p-3">
                   <div className="flex flex-col gap-2">
-                    <button type="button" onClick={() => handleEdit(activity)} className="px-3 py-1 rounded">
+                    <button type="button" onClick={() => handleEdit(activity)} className="px-3 py-1 rounded text-blue-700 hover:bg-blue-100">
                       Edit
                     </button>
                     <button
